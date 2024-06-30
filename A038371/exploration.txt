@@ -32,13 +32,12 @@ a(64k+32) = 193 iff k==1 (mod 3), else 1217 if k==9 (mod 19), else 2753 if k==21
  * The list should end with Mod(0,1) or with the default value. */
 r(k, L=L32)=forstep(i=2, #L, 2, k==L[i] && return(L[i-1])); L[#L]
 
-/* Here are the corresponding lists for other "series" (odd multiples of m = 1, 2, 4, 8 ...):
+/* Here are the corresponding lists for other "series"
+ * of odd multiples of m = 1, 2, 4, 8 ...:
  */
 L1 = [7, Mod(1, 3), 11]
 L2 = [29, Mod(3, 7), 61, Mod(7, 15), 89, Mod(5, 11), 101]
-L4 = [73]
-L8 = [17]
-L16 = [97 , Mod(1, 3), 353]
+L4 = [73] ; L8 = [17] ; L16 = [97, Mod(1, 3), 353]
 
 /* return the first k for which the formula would not be correct,
  * for n odd multiple of m, using n = (2k+1)m, k=start..LIM,
@@ -49,6 +48,10 @@ L16 = [97 , Mod(1, 3), 353]
 
 /* chk(32,10^5) ==> no result ==> check OK! */
 
+/* General function giving a(n),  
+ * using the list corresponding to the valuation of n.
+ */
+a(n, v=valuation(n,2)) = r(n>>(v+1), eval(Str("L",2^v)))
 
 /*
  * How did we find this?
