@@ -1,4 +1,6 @@
-/* This is text & PARI/GP code.
+/* This file's format is text & PARI/GP code.
+ * (The appropriate ending, ".gp", is unfortunately misinterpreted as "gnuplot",
+ *  whiche causes weird mformatting when displayed on github.)
  */
 From ~~~~: (Start)
 a(2k+1) = 7 iff k == 1 (mod 3), else 11. [Making the 2008 formula more precise.]
@@ -11,8 +13,21 @@ a(64k+32) = 193 iff k==1 (mod 3), else 1217 if k==9 (mod 19), else 2753 if k==21
       else 4673 if k==36 (mod 73), else 5953 if k==15 (mod 31), else 6529 if k==8 (mod 17),
       else 13633 if k==35 (mod 71), else 15937 if k==41 (mod 83), else 19841. (End)
 
+/*** implement & check this formula:
+ * Note: as in the formula, the smallest *results* must be checked first,
+ * because we're searching the *smallest* prime factor.
+ **/
+{L32 = [193, Mod( 1,  3),  1217, Mod( 9, 19),  2753, Mod(21, 43),  3137, Mod(24, 49),
+       3329, Mod( 6, 13),  4481, Mod(17, 35),  4673, Mod(36, 73),  5953, Mod(15, 31),
+       6529, Mod( 8, 17), 13633, Mod(35, 71), 15937, Mod(41, 83), 19841, Mod( 0, 1)]}
+r(k, L=L32)=forstep(i=2, #L, 2, k==L[i] && return(L[i-1]));error("none!")
+/* return the first k for which the formula would not be correct,*/
+{chk(m=32,LIM=10^5,start=1,L=eval(Str("L"m)))=
+ for(k=start, LIM, Mod(10,r(k,L))^(64*k+32)==1 && return(k))}
+/* ==> no result ==> check OK! */
+
 How did we find this?
-... to be developed ...
+(... to be developed ...)
 
 /* smallest prime factor -- poor man's version, better see oeis.org/A038371 */
 spf(n) = A038371(n) = factor(n,0)[1,1]
@@ -89,4 +104,3 @@ fn( ( 35 + 'x)*64+32, 13633 )
 
 fn( ( 41 + 'x)*64+32, 15937 )
 %127 = [83, Mod(0, 15937)]
-
