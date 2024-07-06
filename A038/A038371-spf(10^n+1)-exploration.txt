@@ -1,7 +1,14 @@
 /* This file's format is text & PARI/GP code.
  * (The appropriate ending, ".gp", is unfortunately misinterpreted as "gnuplot",
  *  whiche causes weird mformatting when displayed on github.)
+
+oeis.org/A038371: Smallest prime factor of 10^n + 1.
+= 2, 11, 101, 7, 73, 11, 101, 11, 17, 7, 101, 11, 73, 11, 29, 7, 353, 11, 101, 11, 73, 7, 89, 11, 17, 11, 101, 7, 73, 11, 61, 11, 19841, 7, 101, 11, 73, 11, 101, 7, 17, 11, 29, 11, 73, 7, 101, 11, 97, 11, 101, 7, 73, 11, 101, 11, 17, 7, 101, 11, 73, 11, 101, 7, 1265011073
+Record values are a(0, 1, 2, 16, 32, 64, ...) = (2, 11, 101, 353, 19841, 1265011073, ...),
+also found in oeis.org/A185121 and oeis.org/A102050 (smallest prime factor of 10^2^n+1).
+
  */
+## FORMULA 
 From ~~~~: (Start)
 a(2k+1) = 7 iff k == 1 (mod 3), else 11. [Making the 2008 formula more precise.]
 a(4k+2) = 29 iff k == 3 (mod 7), else = 61 if k == 7 (mod 15), else = 89 if k == 5 (mod 11), else 101.
