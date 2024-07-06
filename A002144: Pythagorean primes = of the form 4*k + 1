@@ -1,0 +1,27 @@
+/* oeis.org/A002144: Pythagorean primes: primes of form 4*k + 1. (Formerly M3823 N1566) */
+
+A2144=List([ 5, 13, 17, 29, 37, 41, 53, 61, 73, 89,   97, 101, 109, 113, 137, 149, 157, 173, 181, 193,{
+  197, 229, 233, 241, 257, 269, 277, 281, 293, 313,  317, 337, 349, 353, 373, 389, 397, 401, 409, 421,
+  433, 449, 457, 461, 509, 521, 541, 557, 569, 577,  593, 601, 613, 617 }])
+
+A002144(n)= while(#A2144<n, listput(A2144, A2144_next()); A2144[n]
+A2144_next(p=A2144[#A2144])=forprime(p=p+1, , p%4==1 && return(p))
+/* alternative code: (NOTE: Beyond primelimit, this is MUCH faster than the above!!) */
+A2144_next(p=A2144[#A2144])=until(isprime(p+=4),);p
+
+/*** timings:
+A2144_next(p=A2144[#A2144])=until(isprime(p+=4),);p
+p=5;sum(k=1,1e3,p=A2144_next(p))    \\time = 15 ms.    \\%420 = 8273996
+p=5;sum(k=1,1e4,p=A2144_next(p))    \\time = 16 ms.    \\%421 = 1072782032
+p=5;sum(k=1,1e5,p=A2144_next(p))    \\time = 312 ms.   \\%422 = 132197495864
+
+A2144_next(p=A2144[#A2144])=forprime(p=p+1, , p%4==1 && return(p))
+p=5;sum(k=1,1e5,p=A2144_next(p))
+
+p=5;sum(k=1,1e3,p=A2144_next(p))                       \\%424 = 8273996
+p=5;sum(k=1,1e4,p=A2144_next(p))    \\time = 16 ms.    \\%425 = 1072782032
+p=5;sum(k=1,1e5,p=A2144_next(p))    ***   user interrupt after 9,671 ms
+***/
+
+/* condensed version for OEIS.org: */
+A2144=List(5); A002144(n)={while(#A2144<n, forprime(p=A2144[#A2144]+1, , p%4==1 && listput(A2144, p)+break)); A2144[n]} \\ M. F. Hasler, Jul 06 2024
