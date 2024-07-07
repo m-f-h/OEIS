@@ -1,0 +1,9 @@
+(PARI)
+A072883(n)=if(is_A097792(n), n==4, for(k=1, oo, ispseudoprime(k^n+n) && return(k)))}, [1..99]) \\ M. F. Hasler, Jul 07 2024
+
+(Python)
+def A072883(n):
+   if is_A097792(n): return int(n==4)
+   for k in range(1,9e9):
+      if isprime(k**n+n): return k # _M. F. Hasler_, Jul 07 2024
+from sympy import isprime
