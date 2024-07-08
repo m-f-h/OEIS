@@ -1,0 +1,144 @@
+oeis.org/A124980: Smallest positive integer decomposable in n different ways as a sum of two squares.
+      = 1, 25, 325, 1105, 4225, 5525, 203125, 27625, 71825, 138125, 2640625, 160225, 17850625, 1221025, 1795625, 801125, 1650390625, 2082925, 49591064453125, 4005625, 44890625, 2158203125, 30525625, 5928325, 303460625, 53955078125, 35409725, 100140625
+
+Offset = 1. COMMENT: could start with a(0) = 3, least number that is sum of 2 squares in 0 ways.
+
+Essentially (for n>1) the same as:
+oeis.org/A000446: Smallest number (=nonnegative integer) that is the sum of 2 squares (allowing zeros) in exactly n ways.
+  = 0, 25, 325, 1105, 4225, 5525, 203125, 27625, 71825, 138125, 2640625, 160225, 17850625, 1221025, 1795625, 801125, 1650390625, 2082925, 49591064453125, 4005625, 44890625, 2158203125, 30525625, 5928325, 303460625, 53955078125 
+
+A124980 is the more natural sequence in the sense of the algorithm we use below.
+      (for n=1, factorizations of 2n-1 = 1 = [[]] (only the empty product)
+      which will yield min( ... , prod(...) for a in [[]]) => only a=[] => empty prod() = 1.)
+
+See also:
+oeis.org/A000448 (...in at least n ways)
+oeis.org/A000161: Number of partitions of n into 2 squares.
+      = 1, 1, 1, 0, 1, 1, 0, 0, 1, 1, 1, 0, 0, 1, 0, 0, 1...
+      (code: A000161(n) = #sum2sqr(n) ; see below)
+oeis.org/A133388: Largest integer m such that n-m^2 is a square, or 0 if no such m exists.
+      = 1, 1, 0, 2, 2, 0, 0, 2, 3, 3, 0, 0, 3, 0, 0, 4, 4, 3, 0, 4, 0, 0, 0, 0, 5,
+(PARI) sum2sqr(n)={ if(n>1, my(L=List(), f, p=1); for(i=1, matsize(f=factor(n))[1], if(f[i, 1]%4==1, listput(L, [qfbsolve(Qfb(1, 0, 1), f[i, 1])*[1, I]~, f[i, 2]] ), /*elseif*/ f[i, 1]==2, p = (1+I)^f[i, 2], /*elseif*/ bittest(f[i, 2], 0), return([]), /*else*/ p *= f[i, 1]^(f[i, 2]\2))); L=apply(s->vector(s[2]+1, j, s[1]^(s[2]+1-j)*conj(s[1])^(j-1)), L); my(S=List()); forvec(T=vector(#L, i, [1, #L[i]]), listput(S, prod( j=1, #T, L[j][T[j]] ))); Set(apply(f->vecsort(abs([real(f), imag(f)])), Set(S)*p)), if(n<0, [], [[0, n]]))} \\ updated by M. F. Hasler, May 12 2018. (If PARI version 2.12.x returns an error, append [1] to qfbsolve(...) above. - M. F. Hasler, Dec 12 2019)
+
+************
+
+Let's implement the algorithm described in this COMMENT (in A000446):
+An algorithm to compute the n-th term of this sequence for n>1:   [Ant King, Oct 07 2010]
+Write each of 2n and 2n-1 as products of their divisors, in decreasing order and in all possible ways. Equate 
+each divisor in the product to (a1+1)(a2+1)...(ar+1), so that a1>=a2>=a3>=...>=ar, and solve for the ai.
+Evaluate A002144(1)^a1 x A002144(2)^a2 x ... x A002144(r)^ar for each set of values determined above, then 
+the smaller of these products is the least integer to have precisely n partitions into a sum of two squares.
+
+Let's first check this:
+Example: n = 2. 2n = 4 = [[4], [2,2]] and 2n-1 = 3 = [[3]].
+For 4 = (a1+1) => a1 = 3 => A2144(1)^3 = 125
+For 2*2 = (a1+1)(a2+1) => a1 = a2 = 1 => A2144(1)^1 * A2144(2)^1 = 5*13 = bigger than below
+For 3 = (a1+1) => a1 = 2 => A2144(1)^2 = 5^2 = 25. 
+
+Example n = 4: 2n = 8 = [[8], [4, 2], [2, 2, 2]] ; 2n-1 = 7 = [[7]]
+For 7 = (a1+1) => a1 = 6 => A2144(1)^6 = 5^6
+For 4*2 = (a1+1)(a2+1) => a1 = 3, a2 = 1 => A2144(1)^3 * A2144(2)^1 = 5^3 * 13
+For 2*2*2 = (a1+1)(a2+1)(a3+1) => a1 = a2 = a3 = 1 => A2144(1) * A2144(2) * A2144(3) = 5 * 13 * 17 <= BEST!
+
+==> NOTE: it's never useful to consider [[2n]], always worse than [[2n-1]].
+Also, if there's a product with more than 1 factor, that's always better than [[2n-1]].
+Q: is it true that the product with the most factors always yields the smallest value?
+
+(Python)
+def A124980(n):
+    return min(prod(a**(f-1) for a,f in zip(A2144(),P))
+                             for P in PD(n*2, n) + PD(n*2-1))
+# where PD(n, L=n) = list of decompositions of n as product with no factor > L:
+def PD(n, L=0): return [[d]+P for d in divisors(n)[:0:-1] if d <= (L or n) 
+                              for P in PD(n//d, d)] if n>1 else [[]] 
+
+PARI/GP:
+
+A000446(n) =
+vecmin([ prod(i=1, #a, A002144(i)^(a[i]-1)) | a <- concat([prod_of_div(n*2), prod_of_div(n*2-1)]) ])
+
+/* Write n in all possible ways as product of its divisors d = (1, p1, p2, ..., n/p1, n).
+   i.e.:  n = n = (n/p1)*p1 = (n/p2)*p2 = (n/(p1*p2))* p2 * p1 = ...
+   So, we start with the largest divisor d[#d] = n ; then, d[#d-1] * d[2],
+   etc.:  when we're down to d[#d-k], we have to write d[1+k]  in all possible ways
+   using only smaller divisors.
+ @param d: list of "admissible" divisors of n. They must be <= n and > 1.
+*/
+prod_of_div(n, L = n, D = Vecrev( divisors(n)[^1] )) = { D || return(D);
+  concat( vector( #D, i, if( D[i] > L, [], D[i] == n, [[n]],
+                             [ concat(D[i], P) | P <- prod_of_div( n/D[i], D[i] )]) ))}
+
+A002144(n)= while(#A2144<n, extend()); A2144[n]
+/* Pythagorean primes: primes of form 4*k + 1. (Formerly M3823 N1566) */
+A2144=List([ 5, 13, 17, 29, 37, 41, 53, 61, 73, 89,   97, 101, 109, 113, 137, 149, 157, 173, 181, 193,{
+  197, 229, 233, 241, 257, 269, 277, 281, 293, 313,  317, 337, 349, 353, 373, 389, 397, 401, 409, 421,
+  433, 449, 457, 461, 509, 521, 541, 557, 569, 577,  593, 601, 613, 617 }])
+
+/* compact version: */
+
+PD(n, L=n, D=Vecrev(divisors(n)[^1])) = { if(D, concat(vector(#D, i, if(D[i] > L, [], D[i] < n, [concat(D[i], P) | P <- PD(n/D[i], D[i])], [[n]]))), D)}
+
+apply( {A000446(n)=vecmin(if(n>1, [prod(i=1, #a, A002144(i)^(a[i]-1)) | a<-concat([PD(n*2)[^1], PD(n*2-1)])]))}, [1..44]) \\ _M. F. Hasler_, Jul 06 2024
+
+/*************  timings ************/
+
+(17:58) gp > for(k=1,1e3,A000446(k))
+  ***   last result computed in 109 ms.
+(18:00) gp > for(k=1,1e4,A000446(k))
+time = 2,955 ms.
+
+/**** compare to this variant: ****/
+
+a(n) = if(n>1, min(A018782(2*n-1), A018782(2*n)) )
+
+primelist(d,r,l) =
+my(v=vector(l),i=0);if(l>0,forprime(p=2,oo,if(Mod(p,d)==r,i++;v[i]=p;if(i==l,break()))));v
+
+prodR = 
+(n,maxf)->my(dfs=divisors(n),a=[],r);for(i=2,#dfs,if(dfs[i]<=maxf,if(dfs[i]==n,a=concat(a,[[n]]),r=prodR(n/dfs[i],min(dfs[i],maxf));for(j=1,#r,a=concat(a,[concat(dfs[i],r[j])])))));a
+
+A018782(n) = 
+my(pf=prodR(n,n), a=1, b, v=primelist(4,1,bigomega(n))); for(i=1,#pf, b=prod(j=1,length(pf[i]), v[j]^(pf[i][j]-1)); if(b<a||i==1,a=b));a
+
+(18:01) gp > for(k=1,1e3,a(k))
+time = 250 ms.              <==== about 2.5 x slower!
+(18:01) gp > for(k=1,1e4,a(k))
+time = 8,828 ms.            <===== (much worse that "our" algorithm)
+
+/************  conclusion : a(n) using A018782 is ~ 2.5 times slower ************/
+
+/*** Python ***/
+from sympy import divisors
+
+def PD(n, L=None): # return list of products that yield n
+      return [[]] if n==1 else [
+              [d]+P for d in divisors(n)[:0:-1] if d <= (L or n) for P in PD(n//d, d)]
+
+def PD(n, L=0): return [[d]+P for d in divisors(n)[:0:-1] if d <= (L or n) 
+                              for P in PD(n//d, d)] if n==1 else [[]] 
+
+def A2144(): # quasi-infinite generator of this seq.:
+    for p in range(5, 99**9, 4):
+        if isprime(p): yield p
+
+# For use in this sequence, yield a "practically infinite" generator of this seq.:
+A2144=lambda: filter(isprime, range(5, 99**9, 4))
+
+# Rem: Instead of the hard-wirded limit 99**9, we could use:
+A2144=lambda upto=99*9: filter(isprime, range(5, upto, 4)))
+
+def A124980(n):
+    return min(prod(a**(f-1) for a,f in zip(A2144(),P))
+               for P in PD(n*2, n) + PD(n*2-1))
+"""
+Here we use PD(n*2, n) instead of PD(n*2)[1:]
+Indeed, the first factorization, [[2n]], will never give the min
+because [[2n-1]] will yield a smaller result.
+So we can remove the first decomposition of the first list.
+It amounts to the same to avoid produciton of this first term [[2n]].
+We can do this by giving an upper limit (2nd arg) L = 2n-1, or simply: n
+because the next smaller possibility, i.e., second largest divisor,
+will always be <= N/2 (and here: = N/2 = n).
+"""
+
+# eof
