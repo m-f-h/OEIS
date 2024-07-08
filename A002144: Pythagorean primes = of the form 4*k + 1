@@ -24,4 +24,18 @@ p=5;sum(k=1,1e5,p=A2144_next(p))    ***   user interrupt after 9,671 ms
 ***/
 
 /* condensed version for OEIS.org: */
-A2144=List(5); A002144(n)={while(#A2144<n, forprime(p=A2144[#A2144]+1, , p%4==1 && listput(A2144, p)+break)); A2144[n]} \\ M. F. Hasler, Jul 06 2024
+A2144=List(5); A002144(n)={while(#A2144<n, forprime(p=A2144[#A2144]+1, ,
+  p%4==1 && listput(A2144, p)+break)); A2144[n]} \\ M. F. Hasler, Jul 06 2024
+
+/*** Python ***/
+
+(Python)
+from sympy import isprime
+
+print(list(filter(isprime, range(1, 618, 4)))) # Michael S. Branicky, May 13 2021
+
+def A2144(limit: int = 99**9): # generator of the terms up to 'limit' (almost oo by default)
+    for p in range(5, limit, 4):
+        if isprime(p): yield p # M. F. Hasler, Jul 07 2024
+
+[p for _, p in zip(range(50), A2144())] # to see the first 50 terms
