@@ -1,0 +1,3 @@
+/* A184856		Primes of the form floor(k*e/(e-1)).
+ */
+select( {is_A184856(n, c=1-exp(-1)) = isprime(n) && for(k=floor(n*c),ceil((n+1)*c), k\c==n && return(1))}, [1..999])
