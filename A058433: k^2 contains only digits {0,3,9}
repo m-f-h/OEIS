@@ -1,0 +1,49 @@
+/* A058433 : Numbers k such that k^2 contains only digits {0,3,9}, not ending with zero. */
+
+(PARI) /* helper function: */
+
+admissibleMod(M=1000, t=[3, 9], debug=0)={ my(tt=1);
+  while(M > tt *= 10,
+    t=concat([t, t+vector(#t, i, t[1])*tt, t+vector(#t, i, t[2])*tt]));
+  debug && print("t="t); t=Set(t); tt=[];
+  for(i=1, M,  if(setsearch(t, i^2 % M), tt=concat(tt, i)));
+  concat(tt, M+tt[1])}
+
+A058433(Nmax=1e10, N=1, addMod=100000, debug=1)={ my(a=[], d=1,
+  addNext = admissibleMod(addMod=10^logint(addMod\/1, 10), [3, 9]),
+  add = vector(addMod, i, i-1 > addNext[d] && d++; addNext[d]-i+1),
+  pow10 = [10^k | k<-[0..logint((Nmax \/= 1)^2, 10)]],
+  nextOK = [if(n, n*pow10) | n <- [0, 2, 1, 0, 5, 4, 3, 2, 1, 0]]); N \/= 1;
+  \\print(nextOK);return;
+  while( Nmax >= N, my(N2 = N^2, numDigits = logint(N2, 10)+1, 
+                       place = nextOK[1 + d = N2 \ pow10[numDigits]]);
+    if( place, N = max(sqrtint(place[numDigits] + d*pow10[numDigits]), N+1); next); 
+    my(Nnext = min(sqrtint((d+1)*pow10[numDigits]), Nmax));
+    debug && print("checking from "N" to "Nnext": <= ", 1+max(0, Nnext-N)*(#addNext-1)\ addMod," candidates.");
+    place=1;
+    while( Nnext >= N += add[1 + N%addMod], my(dr = divrem( N2=N^2, pow10[ place=numDigits ] ));
+      while( place-- && !d=nextOK[1+ (dr = divrem( dr[2], pow10[ place ] ))[1]], );
+      place || break; N = sqrtint(N2 - dr[2] + d[place])+1;
+    ); if(!place, debug && print(N "^2 = ", N^2); a=concat(a,N));
+    N = Nnext*3\2+1
+  ); a} \\ _M. F. Hasler_, May 14 2007
+/*************** old *************/
+A058433(Nmax=1e10, N=1, addMod=100000, debug=1)={ my( a=[], d=1, 
+  addNext=admissibleMod(addMod=10^round(log(addMod)/log(10)), [3, 9]), 
+  add=vector(addMod, i, i-1>addNext[d] && d++; addNext[d]-i+1),
+  pow10 = vector( /*d=*/#Str((Nmax=round(Nmax))^2), i, 10^(i-1)),
+  nextOK=[0, 2, 1, 0, 5, 4, 3, 2, 1, 0], Nnext, N2, numDigits, place )/*end my()*/;
+  nextOK = vector(#nextOK, i, if(nextOK[i], nextOK[i]*pow10));
+
+  while( Nmax >= N, numDigits = #Str(N2=N^2);
+    if( place = nextOK[1+ d=N2 \ pow10[numDigits] ],
+       N = max(sqrtint(place[numDigits]+d*pow10[numDigits]), N+1); next);
+
+    Nnext = min( Nmax, sqrtint( round((d+1)*pow10[numDigits]) ));
+    if( debug, print( "checking from "N" to "Nnext": <= ", 1+max(0, Nnext-N)*(#addNext-1)\ addMod, " candidates.")); 
+    N += add[1+ N%addMod]; place=1; 
+    while( Nnext >= N, dr = divrem( N2=N^2, pow10[ place=numDigits ] );
+      while( place-- && !d=nextOK[1+ (dr = divrem( dr[2], pow10[ place ] ))[1]], );
+    if( !place, break); N = sqrtint( N2 - dr[2] + d[ place ])+1; N+=add[1+N%addMod]; ); 
+    if( !place, if( debug, print( N, "^2 = ", N^2 )); a=concat(a, N));
+  N = Nnext*3\2+1 ); a} \\ M. F. Hasler, May 14 2007
