@@ -23,7 +23,7 @@ oeis.org/A255127: T(r,c) = c-th element of row r which lists the numbers that ar
  r = 9: 25, 167, 311, 457, 599, 745,  883, 1033, 1181, 1321, 1469, 1615, 1753  T(9,k-P9) + S9		     P9 = P8*(23-1), S9 = S8*
  r =10: 29, 205, 371, 551, 719, 895, 1073, 1243, 1421, 1591, 1771, 1945, 2117  T(10,k-P10) + S10,   P10 = P9*(25-1), S10 = S9*
 …
-(Python)
+(Python)"""
 class A255127: # use A[r, c] or A[n] = a(n) or A() for a subscriptable generator of the sequence
    def __class_getitem__(A, args): return A()[args]
    def __new__(A, *a, **k): return A[a if len(a)>1 else a[0]] if a else super().__new__(A, **k) 
@@ -55,4 +55,4 @@ class A255127: # use A[r, c] or A[n] = a(n) or A() for a subscriptable generator
          L = [x for i, x in enumerate(L) if i%L[0]] # remove initial & every k-th element
       if A.debug: print(f"Done extending to limit {A.limit}.")
 
-see also: oeis.org/A255413 - A255419 : rows 3..9
+# see also: oeis.org/A255413 - A255419 : rows 3..9
