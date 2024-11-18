@@ -23,6 +23,8 @@ oeis.org/A255127: T(r,c) = c-th element of row r which lists the numbers that ar
  r = 9: 25, 167, 311, 457, 599, 745,  883, 1033, 1181, 1321, 1469, 1615, 1753  T(9,k-P9) + S9		     P9 = P8*(23-1), S9 = S8*
  r =10: 29, 205, 371, 551, 719, 895, 1073, 1243, 1421, 1591, 1771, 1945, 2117  T(10,k-P10) + S10,   P10 = P9*(25-1), S10 = S9*
 …
+see also: oeis.org/A255413 - A255419 : rows 3..9
+
 (Python)"""
 class A255127: # use A[r, c] or A[n] = a(n) or A() for a subscriptable generator of the sequence
    def __class_getitem__(A, args): return A()[args]
@@ -41,7 +43,7 @@ class A255127: # use A[r, c] or A[n] = a(n) or A() for a subscriptable generator
       while len(A.row) <= n or len(A.row[n]) < min(k, A.P[n]): A.extend(2*n)
       #k -= 1; return A.row[n][k] if k < len(A.row[n]) else A.row[n][k%A.P[n]] + k//A.P[n]*A.S[n]
       return A.row[n][(k-1) % A.P[n]] + (k-1)//A.P[n] * A.S[n]
-   def extend(A, nMax):
+   def extend(A, nMax=9):
       A.limit  *= 2; L = [x+5-x%2 for x in range(0, A.limit, 3)] # after remove of every 2nd & 3rd 
       if A.debug: print(f"Extending to new limit {A.limit}.")
       for r in range(3, nMax): # we start with step r=3 of the sieve, where remaining = (5, 7, …)
@@ -54,5 +56,3 @@ class A255127: # use A[r, c] or A[n] = a(n) or A() for a subscriptable generator
             if A.debug: print(f"Now row {r} has length {len(R)} / {A.P[r]}.")
          L = [x for i, x in enumerate(L) if i%L[0]] # remove initial & every k-th element
       if A.debug: print(f"Done extending to limit {A.limit}.")
-
-# see also: oeis.org/A255413 - A255419 : rows 3..9
