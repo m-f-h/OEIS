@@ -1,0 +1,35 @@
+/* A020498.gp  -  (c) 2024 by MFH
+
+oeis.org/A020498: a(n) is the least number > a(n-1) such that there is no prime p for which a(1) through a(n) would contain all residues modulo p.
+= 1, 3, 7, 9, 13, 19, 21, 27, 31, 33, 37, 43, 49, 51, 57, 63, 69, 73, 79, 87, 91, 97, 99, 103, 111, 117, 121, 129, 133, 139, 141, 147, 153, 157, 159, 163, 169, 177, 183, 187, 189, 199, 201, 211, 213, 217, 231, 241, 243, 247, 253, 261, 267, 271, 273, 279, 283, 289
+
+COMMENT:
+For a given prime p, if r is the only residue (mod p) not among {a(1), ..., a(n)} (mod p) for some index n, then no term of the sequence can be congruent to r (mod p).
+(Instead of a(1...n), one can consider any collection of terms.) - Examples:
+(1) p = 2, r = 0, n = 1: No term can be congruent to 0 (mod 2), i.e., even.
+(2) p = 3, r = 2, n = 2: No term may be congruent to 2 (mod 3).
+(3) p = 5, r = 0, n = 4: No term may be a multiple of 5.
+(4) p = 7, r = 4, n = 6: No term may be congruent to 4 (mod 7).
+(5) p = 11, r = 6, n = 11: No term may be congruent to 6 (mod 11). - M. F. Hasler, Nov 25 2024
+*/
+
+\\ Simple "brute force" script:
+(PARI)
+upto(N, a=[1])={for(n=2, N, forstep(k=a[n-1]+2, oo, 2,
+   forprime(p=3, n, #Set(concat(a, k)%p)==p && next(2)); a=concat(a, k); break)); a} \\ M. F. Hasler, Nov 25 2024
+
+\\ More intelligent : check candidates k just against a list of "excluded residues".
+
+*** WARNING: code below is believed to be wrong ***
+upto(N, a=[1], x=[], p=3)={for(n=2, N, my(r=Set(a%p)); #r==p-1 && [x, p]=[concat(x, Mod(sum(k=1, p-1, r[k]<k), p)), nextprime(p+1)/**+print1([n,p])**/];
+   forstep(k=a[n-1]+2, oo, 2, foreach(x, r, k==r && next(2)); a=concat(a,k); break));a} \\ _M. F. Hasler_, Nov 25 2024
+
+ upto(99)
+[3, 3][5, 5][7, 7][12, 11][15, 13][20, 17][38, 19][39, 23][54, 29][55, 31][58, 37][81, 41][82, 43]
+
+==> we see that n grows much faster than p, and often, the nextprime()-excluded is completed in the very next step,
+which might indicate that it "was already there before, so it should have been implemented before" !!
+
+However, at least up to n=199 this gives the same terms as the Brute-Force method. Coïncidence ?
+
+TO DO : when "condition p" is implemented, double check whether "condition nextprime(p)" is not already satisfied!
