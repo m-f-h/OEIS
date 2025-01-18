@@ -1,0 +1,37 @@
+<HTML>
+<title>Illustration of oeis.org/A006561 - (c) 2017 by M. F. Hasler</title>
+Illustration of A006561(n): Enter the number of points, n =<input id="N" value=5 onchange="Draw()" size=3 />
+<input type=submit value="-" onclick="Change(-1)" />
+<input type=submit value="+" onclick="Change(+1)" />.
+<br/>
+Radius of blobs = <input id="rBlob" value=4 size=2 onchange="Draw()" />,
+Radius of circle = <input id="r" value=300 onchange="Draw()" size=4 />,
+<!-- (larger = thinner lines) -->
+<!--Also draw--> Draw circle: <input id="wantCircle" type=checkbox onchange="Draw()" />.
+<hr/>
+<svg xmlns="http://www.w3.org/2000/svg" id="mySVG" height="90%"></svg>
+<script>
+function Change(delta){ var N=document.getElementById("N"); N.value = parseInt(N.value)+delta; Draw() }
+function Draw(){
+	var N = document.getElementById("N").value, r = Number(document.getElementById("r").value), 
+		margins = r/10, rBlob = '" r="' + document.getElementById("rBlob").value + '" />\n', cx = r+margins, cy = cx, 
+		angle=Math.PI*2/N, string = '<desc property="dc:creator">M. F. Hasler (M.F.@Hasler.fr)</desc>\n';
+	function yCoord(i){ return (cy - Math.cos(i*angle)*r).toFixed(); }
+	function xCoord(i){ return (cx + Math.sin(i*angle)*r).toFixed(); }
+	string+='<circle style="fill:black;stroke:none" cx="'+xCoord(0)+'" cy="'+yCoord(0)+rBlob;
+	for( i = 1; i < N; i++) {
+		var px = xCoord(i), py = yCoord(i);
+		string+='<circle style="fill:black;stroke:none" cx="'+px+'" cy="'+py+rBlob;
+		for( j = 0; j < i; j++){
+			string+='<path style="stroke:black" d="M'+px+','+py+' L'+xCoord(j)+','+yCoord(j)+'" />\n';
+	}	}
+	if( document.getElementById("wantCircle").checked )
+		string+='<circle style="fill:none;stroke:black" cx="'+cx+'" cy="'+cy+'" r="'+r+'" />\n';
+	
+	S=document.getElementById("mySVG");
+	S.setAttribute("viewBox","0 "+ margins/2 + " " + (2*cx) + " " + (2*cy-margins/2));
+	S.innerHTML = string;
+}
+Draw();
+</script>
+</HTML>

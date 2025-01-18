@@ -1,0 +1,65 @@
+<HTML>
+<title>Illustration of oeis.org/A000124 - (c) 2017 by M. F. Hasler</title>
+Illustration of <a href="http://oeis.org/A124">oeis.org/A124(n) = max. number of pieces when slicing a pancake with n cuts:</a>
+<br/>
+<input type=submit value=Suggest onclick="Suggest()"/> n=<input id="numSlices" value=4 size=2 /> 
+<input type=submit value="-" onclick="Change('numSlices',-1)" />
+<input type=submit value="+" onclick="Change('numSlices',+1)" />
+ cuts: <input id="slices" value="16 29 4A 5B" size=20 onchange="Draw()"/>.
+- Draw:
+<input id="wantLabels" checked=checked type=checkbox onchange="Draw()" /> labels,
+<br/>
+<input id="wantCircle" checked=checked type=checkbox onchange="Draw()" /> circle:
+ radius =<input id="r" value=200 onchange="Draw()" size=4 />,
+<input id="wantBlobs" checked=checked type=checkbox onchange="Draw()" /> blobs:
+ number =<input id="N" value=12 onchange="Draw()" size=2 />
+<input type=submit value="-" onclick="Change('N',-1)" />
+<input type=submit value="+" onclick="Change('N',+1)" />,
+ radius =<input id="rBlob" value=8 size=2 onchange="Draw()" />,
+<!-- (larger = thinner lines) -->
+<hr/>
+<svg xmlns="http://www.w3.org/2000/svg" id="mySVG" height="85%"></svg>
+<script>
+function getVar(name) { return document.getElementById(name) }
+function getValue(name) { return getVar(name).value }
+function Change(N,delta){ N=getVar(N); N.value = parseInt(N.value)+delta; Draw() }
+function label( i ){ return i.toString(36).toUpperCase() }
+function Suggest(){ var nS = parseInt(getValue('numSlices')); 
+	if( parseInt(getValue('N')) <= 2*nS) getVar('N').value = 2*nS+1;
+	//else factor = getValue('N')/(2*nS+1); //Math.round((i+nS)*factor)
+	for( suggest = "", i=0; i<nS; i++) 
+		suggest += label(i) + label(i+nS) + ' ';
+	getVar('slices').value = suggest; Draw()
+}
+function Draw(){
+	var N = parseInt(getValue('N')), r = parseInt(getValue('r')), margins = r/10, 
+		rBlob = Number(getValue('rBlob')), rBlobStr = '" r="' + rBlob + '" />\n', cx = r+margins, cy = cx, 
+		angle=Math.PI*2/N, nS = getValue('numSlices'),
+		string = '<desc property="dc:creator">M. F. Hasler (M.F.@Hasler.fr)</desc>\n <text x='+
+		margins+' y='+margins*2+' stroke=black>a('+nS+') = '+ ((nS/2+.5)*nS+1).toFixed() + '</text>\n';
+	function yCoord(i){ return (cy - Math.cos(i*angle)*r).toFixed(); } // NB: toFixed() = string !!
+	function xCoord(i){ return (cx + Math.sin(i*angle)*r).toFixed(); }
+	for( slices = getValue("slices").trim(), tmp="", j = 0; j < slices.length; j++){
+		var chr = parseInt(slices.charAt(j),36); 
+		if( isNaN(chr) ) continue;
+		if( tmp ) {
+			string += tmp+' L'+xCoord(chr)+','+yCoord(chr)+'" />\n'; tmp="";
+		} else
+			tmp='<path style="stroke:black" d="M'+xCoord(chr)+','+yCoord(chr);
+	}	
+	if( getVar('wantCircle').checked )
+		string+='<circle style="fill:none;stroke:black" cx="'+cx+'" cy="'+cy+'" r="'+r+'" />\n';
+	if( getVar('wantBlobs').checked) 
+		for( i = 0; i < N; i++)
+			string += '<circle style="fill:black;stroke:none" cx="'+xCoord(i)+'" cy="'+yCoord(i)+rBlobStr;
+	if( getVar('wantLabels').checked) 
+		for( i = 0; i < N; i++) 
+			string += '<text style="fill:lime;font-weight: bold; font-family: Monospace" x="'+
+				(xCoord(i)-4)+'" y="'+(yCoord(i)*1+4)+'">'+ label(i) +'</text>';
+	S=document.getElementById("mySVG");
+	S.setAttribute("viewBox","0 "+ margins/2 + " " + (2*cx) + " " + (2*cy-margins/2));
+	S.innerHTML = string;
+}
+Draw();
+</script>
+</HTML>

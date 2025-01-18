@@ -1,0 +1,39 @@
+<HTML>
+<title>Illustration of oeis.org/A285357 - (c) 2018 by M. F. Hasler</title>
+<style>
+table td table td { border:1px solid black; font:12pt monospace; padding:0; }
+input { text-align:center }
+</style>
+<script>
+const followers = [[0,1,2,3], [0], [1,2,3], [1,2,3]];
+function all(n,a){ var d = a % 10;
+	if( n>1 ){ d = followers[d+(a && !d)].slice();
+			for(var i=0; i<d.length; i++){
+				d[i] = all(n-1,a*10+d[i]);
+				if( i ) d[0] = d[0].concat(d[i]);
+			}
+			return d[0];
+	} else { return [a*10+(d>1 || !a)]; }
+}
+function getVar(name) { return document.getElementById(name) }
+function getValue(name) { return getVar(name).value }
+const D1=["&nbsp;|","_|","_|", "__"], D2=["&nbsp;|","&nbsp;|","&nbsp;&nbsp;","&nbsp;|"], DT=["&nbsp;","_"];
+function Display(){ var N=getValue("N"), A = all(N,0), rowLength=getValue("rowLength"),
+	s="Number of pavings: T(2," + N + ") = "+ A.length +"<table border=0>";
+	for(var i=0; i < A.length; i++) { var rem=A[i]%10, L1=DT[rem], L2="&nbsp;";
+		if( i%rowLength == 0 ) s += "\n<tr>";
+		s += "\n<td><table><td>";
+		for( j=1; j < N; j++ ) { A[i] = (A[i]-rem)/10; rem=A[i]%10;
+			L1=D1[rem]+L1; L2=D2[rem]+L2;
+		}
+		s += L1+"<br>"+L2+"</table>";
+	}
+	getVar("out").innerHTML = s+"</table>";
+}
+</script>
+Illustration of <a href=http://oeis.org/A285357>A285357</a>(2,n):
+Enter n =<input id="N" onchange="Display()" size=3 />. &nbsp;
+(Drawings per row: <input id="rowLength" value=5 size=3 onChange="Display()">)
+<hr/>
+<div id="out">&nbsp;</div>
+</HTML>

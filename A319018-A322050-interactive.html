@@ -1,0 +1,88 @@
+<HTML>
+<title>Illustration of oeis.org/A319018 etc - (c) 2018 by M. F. Hasler</title>
+<p align=center>Illustration of <a href="http://oeis.org/A319018" target="_new">oeis.org/A319018 etc.:</br> turn ON those cells which have 1 knight-move neighbor turned ON</a>
+<p align="right"><small>&copy; 2018 by <a href="http://oeis.org/wiki/User:M.+F.+Hasler">M. F. Hasler</a></small></p>
+<p>generation: <input id="N" value=2 onchange="Draw()" size=2 />
+<input type="submit" value="-" onclick="Change('N',-1)" />
+<input type="submit" value="+" onclick="Change('N',+1)" /> -
+<input type="submit" value="Draw" onclick="Draw()"/> 
+on each change 
+<input type="checkbox" id="draw_at_change" checked />.
+[Scale: <input id="r" value=200 onchange="updateVars()" size=4 />,
+size: <input id="imgSize" value=500 onchange="updateVars()" size=4 />,
+<input type="submit" value="Restart" onclick="document.reload()"/> 
+<hr/>
+<p id="seq"><a href="https://oeis.org/A319019" target="_new">A319019</a> (new ON cells)&nbsp;: a(1) = 1 ; </p>
+<svg xmlns="http://www.w3.org/2000/svg" id="mySVG" height="85%">
+<desc property="dc:creator">M. F. Hasler (M.F.@Hasler.fr)</desc>
+</svg>
+<script>
+function getVar(name) { return document.getElementById(name) }
+function getValue(name) { return getVar(name).value }
+function Change(N,delta){ N=getVar(N); N.value = parseInt(N.value)+delta; updateVars();
+	if( getVar("draw_at_change").checked) Draw();
+}
+function label( i ){ return i.toString(36).toUpperCase() }
+
+const Colors=["red","orange","lime","green","turquoise","blue","magenta"];
+var S, N, margins, cx, cy, computed_generation = 1;
+var r=200, imgSize = 2*cx; 
+
+function updateVars(){
+	S=getVar("mySVG"); N = parseInt(getValue('N')); r = parseInt(getValue('r')); margins = r/10; 
+	imgSize = parseInt(getValue('imgSize')); cx = imgSize/2; cy = cx; // nS = getValue('numSlices'),
+	S.setAttribute("viewBox","0 0 " + imgSize + " " + imgSize); //-margins/2
+}
+function yCoord(y){ return (cy - 10*y).toFixed() }
+function xCoord(x){ return (cx + 10*x).toFixed() }
+
+function PlotLabel(xy,g){ xy = xy.split(',');
+	//fill:lime; 
+	//console.log('gen='+computed_generation + '; x,y=' + xCoord(xy[0])+','+ yCoord(xy[1]))
+	S.innerHTML += '<text style="font-weight: bold; font-family: Monospace" stroke="' +
+		Colors[g % Colors.length] + '" x=' + xCoord(xy[0]) + ' y='+
+		yCoord(xy[1]) + '>' + label(g) +'</text>';
+}
+Array.prototype.AddVector = function (v) { // using order v[i]+n => works if v is integer, n is String
+	return this.map( function (n,i) { return parseInt(n)+v[i] })
+}
+const knight_moves=[[-2,-1],[-2,1],[-1,-2],[-1,2],[1,-2],[1,2],[2,-1],[2,1]];
+var new_ON = new Set(["0,0"]), seen_earlier = new Set(); // either switched ON or left OFF (if so, forever)
+
+function next_generation(){
+	var new_neighbors = new Set(), cnt = 0;
+	console.log('computing next generation: '+(computed_generation + 1)); 
+//	new_ON.forEach( already_done.add ); // why doesn't his work :-( !
+	new_ON.forEach( function(cell) { seen_earlier.add(cell) });
+	new_ON.forEach( function(current) {
+		current = current.split(',');
+	//	console.log("current became ",current)
+		knight_moves.forEach( function(move) {
+			var n = current.AddVector(move).toString();
+			if( !seen_earlier.has(n)) {
+				if( !new_neighbors.has(n))
+					new_neighbors.add(n);
+				else {
+					seen_earlier.add(n); cnt++;
+					new_neighbors.delete(n);
+				}
+			}
+		})
+	});
+	console.log("added "+(new_neighbors.size)+" new neighbors:", new_neighbors," and "+cnt+" new OFF's."); 
+	new_ON = new_neighbors;
+	computed_generation += 1;
+	getVar('seq').innerHTML += ' a('+computed_generation+') = '+new_ON.size + '&nbsp;; ';
+}
+function drawNode( node ) { PlotLabel(node, computed_generation); }
+function Draw(){
+	updateVars();
+	while( computed_generation < N ) {
+		next_generation();
+		new_ON.forEach( drawNode );
+	}
+}
+updateVars();
+new_ON.forEach( drawNode );
+</script>
+</HTML>
