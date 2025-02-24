@@ -7,7 +7,7 @@ A377092: something = Fibonacci
 
 See also A377090 for a simpler variant
 '''
-from sympy import isprime # for A377092
+from sympy import isprime # for A377090
 
 # version 1-b
 def A377090(n = None, ok = isprime):
@@ -22,6 +22,7 @@ def A377090(n = None, ok = isprime):
     # Possible extension: optional 'stop' parameter, then use 
     # (... for n in range(n or 0, stop or 2**63))
 # _M. F. Hasler_, Feb 10 2025
+
 
 # Now we could implement additional functionality:
 # for example:
@@ -51,9 +52,19 @@ class A377090:
             A.terms.append(k)
         return A.terms[n] # _M. F. Hasler_, Feb 10 2025
     terms = [0]; N = 1 # least unused candidate
-class A377091(A377090): # note: it is essential to initialize N and terms in each subclass!
-    terms=[0]; N=1; ok = lambda n: (n**.5).is_integer() # issquare
-class A377090(A377090):
-    terms=[0]; N=1; ok = is_A000045 # is_fibonacci
 
+issquare = lambda n: (n**.5).is_integer() # issquare
+
+class A377091(A377090): # note: it is essential to initialize N and terms in each subclass!
+    terms=[0]; N=1; ok = issquare
+
+A010056 = lambda n: issquare(k := 5*n**2+4) or (n>0 and issquare(k-8)) # is_A000045 (is_fibonacci)
+
+# check: (note, the select won't put the 1 twice so we test from 1,2... onwards
+
+assert (F1 := [k for k in range(1,50) if A010056(k)]) == (
+    (F2 := [1,2]) and any(len(F2)==len(F1)or F2.append(sum(F2[-2:]))for _ in range(50)) and F2)
+ 
+class A377092(A377090):
+    terms=[0]; N=1; ok = is_A000045 # is_fibonacci
 
