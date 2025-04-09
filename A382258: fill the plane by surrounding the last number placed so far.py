@@ -43,10 +43,12 @@ class A382258:
     "Return n-th term or the sequence object if no n is given."
     return super().__new__(cls) if n is None else cls.nth_term(n)
   @classmethod
-  def nth_term(cls, n): any((len(cls.terms)>n or cls.extend()) for _ in range(n)); return cls.terms[n]
+  def __getitem__(self, n): # TODO: implement slices
+    any((len(cls.terms)>n or cls.extend()) for _ in range(n)); return cls.terms[n]
+  ''' actually, __iter__ isn't needed when we have __getitem__ !
   def __iter__(self, start = 0, stop = None, step = 1):
     while stop is None or start < stop: yield self.nth_term(start); start += step
-  def __getitem__(self, n): return self.nth_term(n) # TODO: implement slices
+  '''
   @classmethod
   def extend(cls):
     free_neighbors = [N for d in cls.neighbors if not cls.grid.get(N := cls.pos + d)];
@@ -60,3 +62,4 @@ class A382258:
     for n in free_neighbors: cls.N += 1; cls.grid[n] = cls.N  # fill in the numbers
     cls.pos = n # free_neighbors[-1]   # update position
     cls.terms.append(cls.N)
+    # NB : this method should not return anything! (its use in any() assumes it returns None or falsy)
