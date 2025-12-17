@@ -1,6 +1,6 @@
 ---
-title: "super-d numbers :  d*n^d contains 'd...d'"
 ---
+## "super-d numbers :  d*n^d contains 'd...d'"
 * oeis.org/A032743: super-2 numbers
 * oeis.org/A014569: super-3 numbers
 * oeis.org/A032744: super-4 numbers
