@@ -1,3 +1,4 @@
-<h1>m-f-h/OEIS</h1>
-
+---
+Title: m-f-h/OEIS
+---
 Programs and interactive illustrations for OEIS sequences
