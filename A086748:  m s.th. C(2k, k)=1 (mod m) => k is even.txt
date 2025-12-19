@@ -6,6 +6,8 @@ permalink: A086748.html
 105, 111, 115, 117, 123, 125, 129, 135, 141, 145, 147, 153, 155, 159, 165, 171, 175, 177, 183,
 185, 189, 195, 201, 205, 207, 213, 215, 219, 225, 231, 235, 237, 243, 245]
 
+"Formula": A086748 = { odd m | C(2k,k) \in m\Z+1 => k is even } 
+
 Robert Israel & MaxAl: Odd is important: all even numbers "voidly" satisfy the definition
   because C(2k,k) is always even, thus never ==1 (mod even m), 
   so for even m, any k such that ==1 (mod m) [which never happens], is always even.
