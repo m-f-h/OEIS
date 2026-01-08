@@ -13,6 +13,6 @@ Interactive illustrations:
 
 Technical notes to myself:
 - ["TO DO list" (page)](TODO.html) [(in the repo)](https://github.com/m-f-h/OEIS/)
-- [pense-bête pages github](pense-bête+pages+github.html)
+- [pense-bête pages github](pense-bête%20pages%20github.html)
 - [contenu du répertoire OEIS](https://github.com/m-f-h/OEIS/) 
 - [link to this page on github.io](https://m-f-h.github.io/OEIS/) [for easy access when viewing this in the repo]
