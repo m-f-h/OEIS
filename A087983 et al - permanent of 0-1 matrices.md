@@ -35,5 +35,32 @@ while(row/* row to increment */, if( row==n, for(j=rows[n],Mn, M[n,]=binary(j); 
   rows[row] < Mn, rows[row]++; until(row>=n, M[row,] = Vec(binary(rows[row]),-n); rows[row++]=max(rows[row-1],min_row[row]) ),
   row--)); vecsum(c) }
 
+/* version using bitmap, with "bittest || += " */
+
+A087983(n)={ my(map=1/* bitmap of observed values */,
+                Mn=2^n-1, M=matrix(n,n,i,j,j==n-i+1), min_row=vector(n,i,2^(i-1)), rows=min_row, row=n, t); 
+while(row/* row to increment */, if( row==n, for(j=rows[n],Mn, M[n,]=binary(j); bittest(map, t=matpermanent(M)) || map += 1<<t),
+  rows[row] < Mn, rows[row]++; /* store in matrix and reset subsequent rows to minimum */
+                  until(row>=n, M[row,] = Vec(binary(rows[row]),-n); rows[row++]=max(rows[row-1],min_row[row]) ); next);
+  row--); hammingweight(map) }
+
+/* version using bitmap, with "bitand" */
+
+A087983(n)={ my(map=1/* bitmap of observed values */, Mn=2^n-1, M=matrix(n,n,i,j,j==n-i+1),
+                min_row=vector(n,i,2^(i-1)), rows=min_row); forstep(row=n, 1, -1,
+  if( row==n, for(j=rows[n], Mn, M[n,]=binary(j); map=bitor(1<<matpermanent(M), map)),
+      rows[row] < Mn, rows[row]++; /* store in matrix and reset subsequent rows to minimum */
+                      until(row>=n, M[row,] = Vec(binary(rows[row]),-n); rows[row++]=max(rows[row-1],min_row[row]) ); row++)
+  ); hammingweight(map) }
+
+/* back to while(row...) */
+
+A087983(n)={ my(map=1/* bitmap of observed values */, Mn=2^n-1, M=matrix(n,n) /* initialize through n=1 */,
+                min_row=vector(n,i,2^(i-1)), rows=min_row, row=1); n&& while(row,
+  if( row==n, for(j=rows[n], Mn, M[n,]=binary(j); map=bitor(1<<matpermanent(M), map)),
+      rows[row] < Mn, rows[row]++; /* store in matrix and reset subsequent rows to minimum */
+                      until(row>=n, M[row,] = Vec(binary(rows[row]),-n); rows[row++]=max(rows[row-1],min_row[row]) ); next);
+  row--); hammingweight(map) }
+
 apply(A087983, [0..5])
 ```
