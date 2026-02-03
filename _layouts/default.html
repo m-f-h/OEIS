@@ -16,11 +16,11 @@
      <div class="wrapper">
     <a href="https://github.com/m-f-h/" title="MFH on github.com">M-F-H</a> . 
     <a href="/" title="my github pages homepage">github.io</a> / 
-    <strong style="font-size:2em; margin-bottom:1em;"><a href="{{ '/' | relative_url }}">{{ site.title }}</a></strong>
+    <strong style="font-size:2em; margin-bottom:1em;"><a class="site-title" href="{{ '/' | relative_url }}">{{ site.title }}</a></strong>
     {% if site.description %} &mdash;
-      <span style="font-size:1em; color:#666;">{{ site.description }}</span>
+      <span style="font-size:1.5em; color:#555;">{{ site.description }}</span>
     {% endif %}
-     </div>
+     </div><hr/>
   </header>
 {% comment %}
   <!-- Short curated navigation -->
@@ -35,7 +35,7 @@
     {{ content }}
 </main>
   <!-- Automatic list of  pages at the bottom -->
-  <footer style="margin-top:2em; font-size:0.9em;">
+  <footer style="margin-top:2em;"><hr/>
     <h3>Other pages in this repo:</h3>
     <ul>
       {% for p in site.pages %}
