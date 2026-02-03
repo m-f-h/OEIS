@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ page.title }}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
+{% comment %}
+  <!-- my own CSS -- not yet existing >
+  <link rel="stylesheet" href="{{ '/assets/style.css' | relative_url }}" -->
+{% endcomment %}
+</head>
+<body>
+  <!-- Small header -->
+  <header style="font-size:1.2em; margin-bottom:1em;">
+    <strong>{{ site.title }}</strong>
+    {% if site.description %}
+      <div style="font-size:0.9em; color:#666;">{{ site.description }}</div>
+    {% endif %}
+  </header>
+{% comment %}
+  <!-- Short curated navigation -->
+  <nav style="margin-bottom:1.5em;">
+    <a href="{{ '/' | relative_url }}">Home</a> |
+    <a href="{{ '/math/' | relative_url }}">Math</a> |
+    <a href="{{ '/notes/' | relative_url }}">Notes</a>
+  </nav>
+{% endcomment %}
+  <!-- Main content -->
+<main>
+    {{ content }}
+</main>
+  <!-- Automatic list of  pages at the bottom -->
+  <footer style="margin-top:2em; font-size:0.9em;">
+    <h3>All pages</h3>
+    <ul>
+      {% for p in site.pages %}
+        {% if p.title and p.nav_exclude != true %}
+          <li><a href="{{ p.url | relative_url }}">{{ p.title }}</a></li>
+        {% endif %}
+      {% endfor %}
+    </ul>
+  </footer>
+
+{% if page.mathjax %}  <!-- MathJax -->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+{% endif %}
+</body>
+</html>
