@@ -11,7 +11,7 @@ and  [A053376](http://oeis.org/A053376)-[A053380](http://oeis.org/A053380)) are 
 
 where 0 < A < B < 10 are two nonzero digits with opposite parity.
 
-It is somewhat remarkable that this definition defines a(n) uniquely.
+It is somewhat remarkable that this definition defines a(n) uniquely
 (*i.e.*, at no length $n$, there will ever be any way to replace a certain number of 'B's by 'A' 
 in order to get a smaller multiple of $2^n$).
 <br/>
