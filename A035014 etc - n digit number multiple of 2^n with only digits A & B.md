@@ -1,14 +1,14 @@
 ---
 permalink: /A035014/
-title: A035014, A053312-A053338 and A053376-A053380
+title: "A035014 etc: multiple of 2<sup><i>n</i></sup> with <i>n</i> digits in {A, B}"
 mathjax: true
 ---
-# [A035014](http://oeis.org/A035014) etc.: multiple of $2^n$ with $n$ digits in {A, B}
+## [A035014](http://oeis.org/A035014) *et al.*: unique multiple of $2^n$ with $n$ digits in {A, B}
 
 These sequences (mostly in the range [A053312](http://oeis.org/A053312)-[A053338](http://oeis.org/A053338) 
-and  [A053376](http://oeis.org/A053376)-[A053380](http://oeis.org/A053380)) are of the form
+and [A053376](http://oeis.org/A053376)-[A053380](http://oeis.org/A053380)) are of the form
 
-> a(n) = unique number having n digits A or B which is divisible by $2^n$.
+* a(n) = unique number having $n$ digits A or B which is divisible by $2^n$.
 
 where 0 < A < B < 10 are two nonzero digits with opposite parity.
 
