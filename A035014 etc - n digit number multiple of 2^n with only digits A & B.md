@@ -1,19 +1,23 @@
 ---
 permalink: /A035014/
+title: A035014, A053312-A053338 and A053376-A053380
 ---
-# A035014 etc.: multiple of 2^n with n digits in {A, B}
+# [A035014](http://oeis.org/A035014) etc.: multiple of $2^n$ with $n$ digits in {A, B}
 
-These sequences (most in [A053312](http://oeis.org/A053312)-[A053380](http://oeis.org/A053380)) are of the form
+These sequences (mostly in the range [A053312](http://oeis.org/A053312)-[A053338](http://oeis.org/A053338) 
+and  [A053376](http://oeis.org/A053376)-[A053380](http://oeis.org/A053380)) are of the form
 
-> a(n) = unique number having n digits A or B which is divisible by 2^n
+> a(n) = unique number having n digits A or B which is divisible by $2^n$.
 
 where 0 < A < B < 10 are two nonzero digits with opposite parity.
 
 It is somewhat remarkable that this definition defines a(n) uniquely.
+(*i.e.*, at no length $n$, there will ever be any way to replace a certain number of 'B's by 'A' 
+in order to get a smaller multiple of $2^n$).
 <br/>
 Also note that they are not "the same up to substitution of the digits".
-<br/>
-**FORMULA:** a(n+1) = a(n) + 10^n * (A if a(n)/2^n odd else B), assuming A is the odd digit.
+
+**FORMULA:** a(n+1) = a(n) + $10^n \cdot (A \text{ if } a(n)/2^n \text{ is odd, else } B)$, assuming A is the odd digit.
 
 ## Program (PARI/GP, others to follow)
 ```(PARI)
@@ -51,4 +55,3 @@ find(n,D=[7,8])=forvec(d=vector(n,i,D),fromdigits(d)%2^n||print(d)) \\ not retur
 * 5,8 : [A053378](http://oeis.org/A053378) = 8, 88, 888, 5888, 85888, 885888, 8885888, 58885888, 558885888, 8558885888
 * 7,8 : [A053379](http://oeis.org/A053379) = 8, 88, 888, 7888, 77888, 877888, 7877888, 87877888, 787877888, 8787877888
 * 8,9 : [A053380](http://oeis.org/A053380) = 8, 88, 888, 9888, 89888, 989888, 9989888, 89989888, 989989888, 8989989888
-
