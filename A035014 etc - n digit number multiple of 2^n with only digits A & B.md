@@ -1,6 +1,7 @@
 ---
 permalink: /A035014/
 title: A035014, A053312-A053338 and A053376-A053380
+mathjax: true
 ---
 # [A035014](http://oeis.org/A035014) etc.: multiple of $2^n$ with $n$ digits in {A, B}
 
