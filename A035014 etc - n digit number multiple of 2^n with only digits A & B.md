@@ -1,3 +1,4 @@
+---
 permalink: /A035014/
 ---
 # A035014 etc.: multiple of 2^n with n digits in {A, B}
@@ -22,9 +23,11 @@ Also note that they are not "the same up to substitution of the digits".
  */
 first(n, d=[1,2], t=0)= d[2]%2 && d=Vecrev(d); vector(n, k, t += d[!(t%2^k)+1]*10^(k-1))
 
+/* function Axxx(n) that only returns the n-th term (less efficient if many terms are needed) */
+a(n, d=[1,2], t=0)= d[2]%2 && d=Vecrev(d); for(k=1,n, t += d[!(t%2^k)+1]*10^(k-1)); t
+
 /* explicit exhaustive search (this works only for digits [d,d+1], use e.g. vecextract for other cases) */
 find(n,D=[7,8])=forvec(d=vector(n,i,D),fromdigits(d)%2^n||print(d)) \\ not return() to see all solutions
-
 ```
 ## Table of the sequences for given digits A, B:
 
