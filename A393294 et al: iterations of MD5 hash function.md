@@ -2,13 +2,13 @@
 title: "Sequences and functions related to the MD5 hash function"
 permalink: A393294/
 ---
-# Functions related iterations of the MD5 hash function.
+## Functions related to iterations of the MD5 hash function.
 
 Concerned sequences:
-* [A393294: Iteration numbers k such that MD5^{k}(128 bits of 0) is a record high value.](https://oeis.org/A393294)
 * [A234849: Positions of records in iterated MD5 applied to empty string.](https://oeis.org/A234849)
+* [A393294: Iteration numbers k such that MD5^{k}(128 bits of 0) is a record high value.](https://oeis.org/A393294)
 
-## Introduction
+### Introduction
 The [MD5 (message digest) hash function](https://en.wikipedia.org/wiki/MD5#Algorithm) 
 takes a message and returns a 128-bit digest hash value (often displayed as 32 hex digits). 
 The messaage is split into chunks of 512 bits = sixteen 32-bit words. 
@@ -22,7 +22,7 @@ Through repeated XOR and other bitwise operations, the MD5 algorithm computes on
 from the arbitrary number of 512-bit blocks. 
 These 128 bits or 16 bytes are the resulting output message or return value of the MD5 function.
 
-## Iterated MD5
+### Iterated MD5
 The MD5 function can then be iterated by feeding it the 128-bit hash return value as new input.
 
 Although it can be interpreted as an integer between 0 and $ 2^128 - 1 $, 
@@ -134,7 +134,7 @@ if `first` is given, or else of the entire infinite sequence."""
 
 print(list(a393294(first=10)))
 ```
-Possible alternate sequences:
+## Possible alternate sequences:
 * complement to A234849: start with "", list iteration numbers for which new record *lows* occur.\
   submitted as https://oeis.org/draft/A393133
 ```
