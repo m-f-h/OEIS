@@ -1,21 +1,28 @@
 """ sequence.py
-    defines classes with general properties and methods for integer sequences.
+    Defines classes with general properties and methods for integer sequences.
 
     (c) MFH, Oct. 2022 - Apr. 2025
 
-The idea is to be able to sublass it, viz:
-class Axxx(Sequence):
-    # minimal adjustments.
+Contents:
+- "base class" Sequence, providing several default "fallback" methods
+  that use whatever the user gave as information
 
-    For any subclass or instance, at least one of the two methods:
+    pro / cons for
+  * __getitem__(self, n:int | slice) : will use __call__ (or maybe terms[...])
+  * ...
+
+  
+  A concrete sequence should (re)define at least one method among:
     * __call__(self, n): #(returns the n-th term), or 
     * extend(self): #(extends self.data by at least 1 term, if possible)
-    should be user provided, to define the sequence.
+    Example:
+    class A000079(Sequence): # the squares
+        def __call__(self, n): return n**2
+  
 
     Examples:
     class squares(Sequence):
-        def __getitem__(self, n): return n**2
-
+        def __call__(self, n): return n**2
     s = squares();
     s[:20] == list(s(first=20)) = squares(first = 20)  # list the first 20 squares, 0² ... 19².
     s[-4] # gives element of index -4 among the precomputed terms, ==> 16.
