@@ -1,6 +1,6 @@
 ---
 permalink: /A035014/
-title: "A035014 etc: multiple of 2<sup><i>n</i></sup> with <i>n</i> digits in {A, B}"
+ignore_title: "A035014 etc: multiple of 2<sup><i>n</i></sup> with <i>n</i> digits in {A, B}"
 mathjax: true
 ---
 ## [A035014](http://oeis.org/A035014) *et al.*: unique multiple of $2^n$ with $n$ digits in {A, B}
