@@ -7,6 +7,9 @@ In late 2025 we activated [github.io pages for this repo](https://m-f-h.github.i
 In early 2026, we started [the Wiki](https://github.com/m-f-h/OEIS/wiki) and will now move most content to there for easier editing and better readability.
 
 We'll keep only the .html (and .js, .css, ...) files here so they can be accessed from everywhere as github.io pages.
-<br/>[Note: .md files must have a YAML header (really? maybe not!), and must **not** have ':' in the filename (indeed!).]
+<br/> [Note: .md files must(?) have a YAML header (or maybe not?!), and must **not** have ":" in the filename (indeed!).]
 
---MFH, 8.Jan.2026
+### Technical note to myself:
+**really <u>go to</u>** [this wiki page for more information about how this works!](https://github.com/m-f-h/OEIS/wiki/GitHub%20pages)
+
+--MFH, 8.Jan.2026, updated 24.Sep.2026
