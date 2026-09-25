@@ -1,5 +1,5 @@
 # OEIS
-Code and more for OEIS sequences. NOTE: [**use the wiki!** see there for more!](https://github.com/m-f-h/OEIS/wiki)
+Code and more for OEIS sequences. NOTE: [**Use the wiki!** see there for more!](https://github.com/m-f-h/OEIS/wiki)
 
 ### Brief history:
 In late 2025 we activated [github.io pages for this repo](https://m-f-h.github.io//OEIS), in particular to be able to visit .html pages with JavaScipt for "interactive illustrations", such as [A000124-interactive.html](https://m-f-h.github.io//OEIS/A000124-interactive.html).
@@ -10,6 +10,6 @@ We'll keep only the .html (and .js, .css, ...) files here so they can be accesse
 <br/> [Note: .md files must(?) have a YAML header (or maybe not?!), and must **not** have ":" in the filename (indeed!).]
 
 ### Technical note to myself:
-**Really <u>do go to</u>** [this wiki page for more information about how this works!](https://github.com/m-f-h/OEIS/wiki/GitHub pages)
+**Go to** [the wiki page /OEIS/wiki/Github pages` for more information about how this works!](https://github.com/m-f-h/OEIS/wiki/GitHub%20pages)
 
 --MFH, 8.Jan.2026, updated 24.Sep.2026
