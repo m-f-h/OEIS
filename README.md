@@ -1,6 +1,7 @@
 # OEIS
-Code and more for OEIS sequences. NOTE: [**Use the wiki!** see there for more!](https://github.com/m-f-h/OEIS/wiki)
-
+Code and more for OEIS sequences. **NOTE:**
+* [**Use the wiki!** see there for more!](https://github.com/m-f-h/OEIS/wiki)
+* This is really just  a README file, the homepage displayed at [m-f-h.github.io/OEIS](https://m-f-h.github.io//OEIS) is defined in the [`index.md`](./index.md) file!
 ### Brief history:
 In late 2025 we activated [github.io pages for this repo](https://m-f-h.github.io//OEIS), in particular to be able to visit .html pages with JavaScipt for "interactive illustrations", such as [A000124-interactive.html](https://m-f-h.github.io//OEIS/A000124-interactive.html).
 
