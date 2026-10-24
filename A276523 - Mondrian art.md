@@ -5,11 +5,11 @@ History:
   2026-10-23: source code created
   2026-10-24: github page created, renamed optimal_tilings to A278970, added option tilings=None/1/all
 ---
-The **Mondrian art puzzle** consists in finding a tiling of an $n\times n$ square into
+The **Mondrian art puzzle** consists in finding a tiling of an <i>n &times; n</i> square into
 incongruent rectangles, such that the **_defect_** := difference between the areas of the 
 largest and the smallest rectangle, is minimal.
 
-References: [A276523](https://oeis.org/A276523) gives the least defect for size n.
+References: [oeis:A276523](https://oeis.org/A276523) gives the least defect for size n.
 - https://phoenixsmaug.github.io/mondrian-web/ Interactive web pagee by Mia Müßig
 
 ```(Python)
