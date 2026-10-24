@@ -1,14 +1,17 @@
-title: Mondrian art puzzle
+---
+title: "A276523: Mondrian art puzzle and Python code"
+permalink: /Mondrian/
 History:
   2026-10-23: source code created
   2026-10-24: github page created, renamed optimal_tilings to A278970, added option tilings=None/1/all
 ---
-The Mondrian art puzzle consists in finding a tiling of an $n\times n$ square into
-incongruent rectangles, such that the "defect" := difference between the areas of the 
+The **Mondrian art puzzle** consists in finding a tiling of an $n\times n$ square into
+incongruent rectangles, such that the **_defect_** := difference between the areas of the 
 largest and the smallest rectangle, is minimal.
 
-References: [A276523](https://oeis.org/A276523) (least defect for size n).
+References: [A276523](https://oeis.org/A276523) gives the least defect for size n.
 - https://phoenixsmaug.github.io/mondrian-web/ Interactive web pagee by Mia Müßig
+
 ```(Python)
 #!/usr/bin/env python3
 """Mondrian Art Puzzle. - (c) by M.F.H., 2026
