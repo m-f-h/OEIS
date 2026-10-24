@@ -14,7 +14,7 @@ References: [oeis:A276523](https://oeis.org/A276523) gives the least defect for 
 
 ```(Python)
 #!/usr/bin/env python3
-"""Mondrian Art Puzzle. - (c) by M.F.H., 2026
+"""Mondrian Art Puzzle. - (c) Oct. 2026 by M.F.H.
 
 Tile an n x n square with integer-sided rectangles that are pairwise non-congruent
 (a x b and b x a count as the same shape), and minimise (largest area) - (smallest area).
@@ -48,14 +48,14 @@ def A276523(n, tilings=None):
 def shapes_in_window(n, lo, hi):
     """Shapes (area, a, b), sorted, with lo <= area <= hi, b > a < n to exclude n x n.
     Smaller/larger shape refers to the rank (area, a), independent of the window of allowed areas.
-"""
+    """
     return sorted((a*b, a, b) for a in range(1, n) for b in range(a, n + 1)
                   if lo <= a * b <= hi)
 
 # lightweight class mainly for display -- not really needed to compute the OEIS sequence
 class Tiling(tuple):
     """A tiling is a tuple of rectangles (x, y, w, h): lower-left corner and size,
-    tiling an n x n square, given in the order they were placed.
+       tiling an n x n square, given in the order they were placed.
     """
     def __str__(self):
         n = max(x + w for x, y, w, h in self); grid = [["."]*n for _ in range(n)]
