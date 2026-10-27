@@ -1,16 +1,5 @@
 ---
-title: TO DO list for my OEIS github pages
+title: TO DO list for my OEIS GitHub pages
+permalink: /TODO/
 ---
-## General (sub)projects
-- Make a better navigation "system"
-- Add Axxx.html as "permalink" for all files (instead of long filename)
-- in _layouts/default, exclude the page itself from list of pages (in footer)
- 
-## New projects (sequences / computational problems) to add:
-- ...
-
-## Files to be corrected / formatted
-- [A086748.html](A086748.html) [(see the repo)](https://github.com/m-f-h/OEIS/)
-
-## Incomplete / unfinished files (unfinished programs...)
-- almost all ..
+This was moved to [the wiki of my OEIS GitHub pages](https://github.com/m-f-h/OEIS/wiki/TODO) on 27-Oct-2026.
