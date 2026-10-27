@@ -501,4 +501,4 @@ def solve_rank_orbit_fast(n, r):
 go(4, 4, solve_rank_orbit_fast) # time: 0.037 sec Résultat: 22560
 go(5, 4, solve_rank_orbit_fast) # time: 0.339 sec Résultat: 17760600
 go(6, 4, solve_rank_orbit_fast) # time: 7.372 sec Résultat: 5295204600
-``
+```
