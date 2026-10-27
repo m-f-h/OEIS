@@ -9,8 +9,8 @@ The **Mondrian art puzzle** consists in finding a tiling of an <i>n &times; n</i
 incongruent rectangles, such that the **_defect_** := difference between the areas of the 
 largest and the smallest rectangle, is minimal.
 
-References: [oeis:A276523](https://oeis.org/A276523) gives the least defect for size n.
-- https://phoenixsmaug.github.io/mondrian-web/ Interactive web pagee by Mia Müßig
+References: <small>&nbsp;&#x25CF;&nbsp;</small> [oeis:A276523](https://oeis.org/A276523) gives the least defect for size n.
+- [Interactive web page `phoenixsmaug.github.io/mondrian-web` by Mia Müßig](https://phoenixsmaug.github.io/mondrian-web/)
 
 ```(Python)
 #!/usr/bin/env python3
@@ -26,9 +26,9 @@ the corresponding solution(s).
 import sys 
 import time
 
-def A276523(n, tilings=None):
+def A276523(n, tilings=False):
     """Return the smallest achievable defect d, or (d, L) if `tilings`,
-    then L = [first or all optimal solution(s) if `tilings`==True or "all"].
+    then L = [first (or all) optimal solution(s) if `tilings`==True (or "all")].
 
     For each d = 2, 3, ..., try every window [m, m + d] of allowed areas.
     The first d that admits a tiling is optimal.
@@ -61,7 +61,7 @@ class Tiling(tuple):
         n = max(x + w for x, y, w, h in self); grid = [["."]*n for _ in range(n)]
         for c, (x, y, w, h) in enumerate(self):
             for j in range(y, y + h): grid[j][x:x + w] = chr(65+c%26)*w
-        return "\n".join(reversed(grid)) + "\n" + self.describe()
+        return "\n".join(reversed([self.describe(), ''] + grid)) 
     def describe(self): return ", ".join(f"{a}x{b}={s}" for s, a, b in self.sizes())
     def sizes(self): return sorted((w * h, min(w, h), max(w, h)) for x, y, w, h in self)
     def defect(self): return max(a := [w * h for x, y, w, h in self]) - min(a) # unused
@@ -125,7 +125,7 @@ def tilings(n, shapes):
 
     yield from rec(0, sum(s[0] for s in shapes), (0,0,0), ())
 
-# This also isn't needed for the OEIS sequence, only for study/checks:
+# This isn't needed for the OEIS sequence, only for study/checks:
 def inequivalent_tilings(n, max_defect=None, limit=None):
     """Yield pairwise inequivalent tilings (up to rotation/reflection).
 
