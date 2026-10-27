@@ -1,12 +1,15 @@
 ---
 title: "A055165 et al.: Number of {0,1}-matrices given size and rank."
 permalink: /A055165/
+remarks: using <pre> didn't work :-(
 ---
 Related sequences:
-- A055165: Number of invertible n X n matrices with entries equal to 0 or 1.<pre>
+- A055165: Number of invertible n X n matrices with entries equal to 0 or 1.
+  <pre>
   1, 1, 6, 174, 22560, 12514320, 28836612000, 270345669985440, 10160459763342013440, ?</pre>
 - A088389 = A055165(n)/n! : `1, 1, 3, 29, 940, 104286, 40050850, 53640013886, 251995529844792, ?`
-- A064230: Triangle T(n,k) = number of rational (0,1) matrices of rank k (n >= 0, 0 <= k <= n):<pre>
+- A064230: Triangle T(n,k) = number of rational (0,1) matrices of rank k (n >= 0, 0 <= k <= n):
+  <pre>
   1;
   1,   1;
   1,   9,      6;
@@ -40,8 +43,7 @@ However, for n >= 6, it becomes too slow. Also, to get {0,1}-matrices of larger 
 (i.e., the terms below the diagonal in A064230), this approach becomes too slow. 
 
 So we tried some more "intelligent" approaches in Python:
-
-```
+```(Python)
 """ rank-r-nxn-matrices.py
 """
 import itertools
@@ -273,7 +275,6 @@ Total time for n=6, r=4: 202.315 s
 Résultat: 5295204600
 time: 202.365 sec
 """
-
 
 def solve_with_orbit_reduction(n, r):
     all_bin = [np.array(p) for p in itertools.product([0, 1], repeat=n)]
